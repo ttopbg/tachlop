@@ -7,8 +7,8 @@ import re
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Tách lớp từ Excel",
-    page_icon="📂",
+    page_title="Tách lớp",
+    page_icon="🐍",
     layout="centered",
 )
 
