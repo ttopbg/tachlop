@@ -182,8 +182,10 @@ if run_btn and uploaded_file and all_classes:
                             worksheet.write(row, col, cell_value, border_fmt)
 
                     for col_num, col_name in enumerate(df_class.columns):
-                        col_data   = df_class[col_name].astype(str)
-                        max_length = max(col_data.map(len).max(), len(str(col_name))) + 2
+                        col_data   = df_class[col_name].fillna("").astype(str)
+                        cell_lens  = col_data.apply(lambda x: len(x))
+                        max_length = int(max(cell_lens.max() if len(cell_lens) > 0 else 0,
+                                            len(str(col_name)))) + 2
                         worksheet.set_column(col_num, col_num, min(max_length, 60))
 
             if has_data:
