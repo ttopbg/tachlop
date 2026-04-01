@@ -12,43 +12,200 @@ st.set_page_config(
     layout="centered",
 )
 
-# ── Custom CSS ────────────────────────────────────────────────────────────────
+# ── Custom CSS (Dark + Light mode aware) ─────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap');
+
+/* ══ Light mode tokens ══ */
+:root {
+  --bg-page:       #f0f4f8;
+  --bg-card:       #ffffff;
+  --bg-item:       #f8fafc;
+  --bg-tag:        #eff6ff;
+  --border-card:   #e2e8f2;
+  --border-item:   #dde4ef;
+  --border-tag:    #bfdbfe;
+  --text-heading:  #1a2744;
+  --text-body:     #1e293b;
+  --text-sub:      #5a6a85;
+  --text-label:    #8a9ab5;
+  --text-item:     #475569;
+  --text-tag:      #1d4ed8;
+  --text-footer:   #b0bec5;
+  --shadow-card:   0 2px 14px rgba(0,0,0,0.07);
+  --result-bg:     #f0fdf4;
+  --result-border: #86efac;
+  --result-text:   #166534;
+  --hr-color:      #e2e8f2;
+}
+
+/* ══ Dark mode tokens — Streamlit sets data-theme="dark" on <html> ══ */
+[data-theme="dark"] {
+  --bg-page:       #10131f;
+  --bg-card:       #1a1f2e;
+  --bg-item:       #222840;
+  --bg-tag:        #1a2645;
+  --border-card:   #2c3350;
+  --border-item:   #323858;
+  --border-tag:    #344f80;
+  --text-heading:  #dce6fa;
+  --text-body:     #c8d4ee;
+  --text-sub:      #7a8aaa;
+  --text-label:    #5a6a88;
+  --text-item:     #8a9ab8;
+  --text-tag:      #7eb3ff;
+  --text-footer:   #3a4560;
+  --shadow-card:   0 2px 20px rgba(0,0,0,0.45);
+  --result-bg:     #0a2018;
+  --result-border: #1a5c35;
+  --result-text:   #6ee7a0;
+  --hr-color:      #2c3350;
+}
+
+/* ══ Base ══ */
 html, body, [class*="css"] { font-family: 'Be Vietnam Pro', sans-serif; }
-.main { background: #f0f4f8; }
+.main { background: var(--bg-page) !important; }
 .block-container { padding-top: 2rem; padding-bottom: 3rem; max-width: 760px; }
-h1 { font-size: 1.8rem !important; font-weight: 700 !important; color: #1a2744 !important; letter-spacing: -0.5px; }
-.subtitle { color: #5a6a85; font-size: 0.95rem; margin-top: -0.4rem; margin-bottom: 1.5rem; }
-.card { background: white; border-radius: 14px; padding: 1.6rem 1.8rem; margin-bottom: 1.2rem;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #e8edf4; }
-.card-title { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
-              color: #8a9ab5; margin-bottom: 0.8rem; }
-.stButton > button { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none;
-    border-radius: 10px; padding: 0.65rem 2.2rem; font-family: 'Be Vietnam Pro', sans-serif;
-    font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;
-    box-shadow: 0 4px 14px rgba(37,99,235,0.35); width: 100%; }
-.stButton > button:hover { background: linear-gradient(135deg, #1d4ed8, #1e40af);
-    transform: translateY(-1px); box-shadow: 0 6px 18px rgba(37,99,235,0.45); }
-.result-box { background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px;
-              padding: 1rem 1.2rem; color: #166534; font-size: 0.9rem; margin-top: 1rem; }
-.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
-.tag { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 20px;
-       padding: 3px 12px; font-size: 0.8rem; font-weight: 500; }
+
+/* ══ Headings ══ */
+h1 {
+  font-size: 1.8rem !important;
+  font-weight: 700 !important;
+  color: var(--text-heading) !important;
+  letter-spacing: -0.5px;
+}
+.subtitle {
+  color: var(--text-sub);
+  font-size: 0.95rem;
+  margin-top: -0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ══ Cards ══ */
+.card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 1.6rem 1.8rem;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-card);
+}
+.card-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-label);
+  margin-bottom: 0.8rem;
+}
+
+/* ══ Info row ══ */
 .info-row { display: flex; gap: 1.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
-.info-item { background: #f8fafc; border-radius: 8px; padding: 0.5rem 1rem;
-             font-size: 0.82rem; color: #475569; border: 1px solid #e2e8f0; }
-.info-item strong { color: #1e293b; }
-.stDownloadButton > button { background: linear-gradient(135deg, #059669, #047857) !important;
-    color: white !important; border: none !important; border-radius: 10px !important;
-    padding: 0.65rem 2.2rem !important; font-family: 'Be Vietnam Pro', sans-serif !important;
-    font-weight: 600 !important; font-size: 0.95rem !important; width: 100% !important;
-    box-shadow: 0 4px 14px rgba(5,150,105,0.35) !important; }
-hr { border: none; border-top: 1px solid #e8edf4; margin: 1rem 0; }
-.step-badge { display: inline-block; background: #2563eb; color: white; border-radius: 50%;
-    width: 22px; height: 22px; text-align: center; line-height: 22px;
-    font-size: 0.75rem; font-weight: 700; margin-right: 8px; }
+.info-item {
+  background: var(--bg-item);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.82rem;
+  color: var(--text-item);
+  border: 1px solid var(--border-item);
+}
+.info-item strong { color: var(--text-body); }
+
+/* ══ Tags ══ */
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+.tag {
+  background: var(--bg-tag);
+  color: var(--text-tag);
+  border: 1px solid var(--border-tag);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* ══ Divider ══ */
+hr { border: none; border-top: 1px solid var(--hr-color); margin: 1rem 0; }
+
+/* ══ Step badge ══ */
+.step-badge {
+  display: inline-block;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 50%;
+  width: 22px; height: 22px;
+  text-align: center; line-height: 22px;
+  font-size: 0.75rem; font-weight: 700;
+  margin-right: 8px;
+}
+
+/* ══ Result box ══ */
+.result-box {
+  background: var(--result-bg);
+  border: 1px solid var(--result-border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  color: var(--result-text);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+/* ══ Primary action button ══ */
+.stButton > button {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 0.65rem 2.2rem !important;
+  font-family: 'Be Vietnam Pro', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s !important;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.35) !important;
+  width: 100% !important;
+}
+.stButton > button:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(37,99,235,0.45) !important;
+}
+.stButton > button:disabled {
+  opacity: 0.45 !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+}
+
+/* ══ Download button ══ */
+.stDownloadButton > button {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 0.65rem 2.2rem !important;
+  font-family: 'Be Vietnam Pro', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  width: 100% !important;
+  box-shadow: 0 4px 14px rgba(5,150,105,0.35) !important;
+  transition: all 0.2s !important;
+}
+.stDownloadButton > button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(5,150,105,0.45) !important;
+}
+
+/* ══ File uploader zone ══ */
+[data-testid="stFileUploaderDropzone"] {
+  background: var(--bg-item) !important;
+  border: 2px dashed var(--border-card) !important;
+  border-radius: 12px !important;
+}
+[data-testid="stFileUploaderDropzone"]:hover {
+  border-color: #2563eb !important;
+}
+
+/* ══ Footer ══ */
+.footer { text-align: center; color: var(--text-footer); font-size: .78rem; margin-top: 2.5rem; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -123,29 +280,20 @@ if uploaded_file:
     except Exception as e:
         st.error(f"❌ Không đọc được file: {e}")
 
-# ── Step 2 – Prefix ───────────────────────────────────────────────────────────
+# ── Step 2 – Process & Download ───────────────────────────────────────────────
 st.markdown("""
 <div class="card">
-  <div class="card-title"><span class="step-badge">2</span>Tuỳ chọn tiền tố tên file đầu ra</div>
-</div>
-""", unsafe_allow_html=True)
-
-prefix = st.text_input(
-    "Tiền tố (để trống nếu không cần)",
-    placeholder="Ví dụ: HocSinh_   →   HocSinh_10A1.xlsx",
-    label_visibility="collapsed",
-)
-
-# ── Step 3 – Process & Download ───────────────────────────────────────────────
-st.markdown("""
-<div class="card">
-  <div class="card-title"><span class="step-badge">3</span>Xử lý &amp; tải xuống</div>
+  <div class="card-title"><span class="step-badge">2</span>Xử lý &amp; tải xuống</div>
 </div>
 """, unsafe_allow_html=True)
 
 run_btn = st.button("⚙️ Tách lớp ngay", disabled=not uploaded_file or not all_classes)
 
 if run_btn and uploaded_file and all_classes:
+    # Derive zip name from input filename (strip extension)
+    input_stem = re.sub(r'\.xlsx?$', '', uploaded_file.name, flags=re.IGNORECASE)
+    zip_name   = f"{input_stem}.zip"
+
     zip_buf = io.BytesIO()
     progress = st.progress(0, text="Đang xử lý…")
     classes_sorted = sorted(all_classes)
@@ -190,8 +338,8 @@ if run_btn and uploaded_file and all_classes:
 
             if has_data:
                 safe_class = re.sub(r'[\\/*?:\[\]/]', '_', str(class_name))
-                filename   = f"{prefix}{safe_class}.xlsx"
-                zf.writestr(filename, wb_buf.getvalue())
+                # Store files inside a folder named after the input file
+                zf.writestr(f"{input_stem}/{safe_class}.xlsx", wb_buf.getvalue())
 
             progress.progress(
                 (idx + 1) / len(classes_sorted),
@@ -211,13 +359,13 @@ if run_btn and uploaded_file and all_classes:
     st.download_button(
         label="⬇️ Tải xuống tất cả (ZIP)",
         data=zip_buf,
-        file_name="tach_lop.zip",
+        file_name=zip_name,
         mime="application/zip",
     )
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.markdown("""
-<div style="text-align:center;color:#b0bec5;font-size:.78rem;margin-top:2.5rem;">
+<div class="footer">
   Hỗ trợ nhận dạng cột: <em>Lớp · Lớp học · Lop · Class · Class Name</em>
 </div>
 """, unsafe_allow_html=True)
